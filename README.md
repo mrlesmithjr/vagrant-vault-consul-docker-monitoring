@@ -44,20 +44,20 @@ vagrant up
 Running as a [Docker] swarm service for storing [Docker Logs](#Filebeat)
 
 [Filebeat]
---------
+---------
 
 [Docker] logs for each host sent to [Elasticsearch]
 
 [Grafana]
--------
+--------
 
 [Kibana]
-------
+--------
 
 Dashboard to view [Docker] logs
 
 [Netdata]
--------
+---------
 
 `node0` is configured as a [Netdata] registry for all over nodes to announce to
 which are also running [Netdata]
@@ -196,7 +196,7 @@ Larry Smith Jr.
 [Filebeat]: <https://www.elastic.co/products/beats/filebeat>
 [Grafana]: <https://grafana.com/>
 [Hashicorp]: <https://www.hashicorp.com/>
-[Kibana]: <
+[Kibana]: <https://www.elastic.co/products/kibana>
 [Netdata]: <https://my-netdata.io/>
 [Prometheus]: <https://prometheus.io/>
 [Vagrant]: <https://www.vagrantup.com/>
