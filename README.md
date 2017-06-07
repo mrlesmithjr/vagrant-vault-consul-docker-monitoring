@@ -1,16 +1,25 @@
 Repo Info
 ---------
+Spin up a multi-node [Vagrant] environment for learning/testing monitoring
+tools for a micro-services world. All provisioning is automated using [Ansible].
+
+Requirements
+------------
+
+- [Ansible]
+- [VirtualBox]
+- [Vagrant]
 
 Environment
 -----------
-- node[0:2] (Consul Servers)
-- node0
-  - Grafana: <http://192.168.250.10:3000>
-  - Netdata: <http://192.168.250.10:19999>
-  - Prometheus: <http://192.168.250.10:9090>
-- node3 (Vault)
-- node[4:6] (Docker Swarm Managers)
-- node[7:9] (Docker Swarm Workers/Consul Clients)
+- `node[0:2]` (Consul Servers)
+- `node0`
+  - [Grafana]: <http://192.168.250.10:3000>
+  - [Netdata]: <http://192.168.250.10:19999>
+  - [Prometheus]: <http://192.168.250.10:9090>
+- `node3` (Vault)
+- `node[4:6]` (Docker Swarm Managers)
+- `node[7:9]` (Docker Swarm Workers/Consul Clients)
 
 Usage
 -----
@@ -21,14 +30,43 @@ Spin up [Vagrant] environment
 vagrant up
 ```
 
-Grafana
+[cAdvisor]
+--------
+
+[Docker] hosts have exposed metrics for [Prometheus] consumption
+
+[Consul]
+--------
+
+[Elasticsearch]
+-------------
+
+Running as a [Docker] swarm service for storing [Docker Logs](#Filebeat)
+
+[Filebeat]
+--------
+
+[Docker] logs for each host sent to [Elasticsearch]
+
+[Grafana]
 -------
 
-Netdata
+[Kibana]
+------
+
+Dashboard to view [Docker] logs
+
+[Netdata]
 -------
 
-Prometheus
+`node0` is configured as a [Netdata] registry for all over nodes to announce to
+which are also running [Netdata]
+
+[Prometheus]
 ----------
+
+[Vault]
+-------
 
 Monitoring Docker Services
 --------------------------
@@ -145,10 +183,22 @@ Author Information
 ------------------
 
 Larry Smith Jr.
-- @mrlesmithjr
+- [@mrlesmithjr]
 - http://everythingshouldbevirtual.com
 - mrlesmithjr [at] gmail.com
 
+[@mrlesmithjr]: <https://www.twitter.com/mrlesmithjr>
 [Ansible]: <https://www.ansible.com>
+[cAdvisor]: <https://github.com/google/cadvisor>
+[Consul]: <https://www.consul.io>
+[Docker]: <https://www.docker.com/>
+[Elasticsearch]: <https://www.elastic.co/>
+[Filebeat]: <https://www.elastic.co/products/beats/filebeat>
+[Grafana]: <https://grafana.com/>
+[Hashicorp]: <https://www.hashicorp.com/>
+[Kibana]: <
+[Netdata]: <https://my-netdata.io/>
+[Prometheus]: <https://prometheus.io/>
 [Vagrant]: <https://www.vagrantup.com/>
+[Vault]: <https://www.vaultproject.io>
 [Virtualbox]: <https://www.virtualbox.org/>
