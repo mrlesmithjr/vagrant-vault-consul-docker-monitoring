@@ -14,9 +14,9 @@ Environment
 -----------
 - `node[0:2]` (Consul Servers)
 - `node0`
-  - [Grafana]: <http://192.168.250.10:3000>
-  - [Netdata]: <http://192.168.250.10:19999>
-  - [Prometheus]: <http://192.168.250.10:9090>
+  - Grafana: <http://192.168.250.10:3000>
+  - Netdata: <http://192.168.250.10:19999>
+  - Prometheus: <http://192.168.250.10:9090>
 - `node3` (Vault)
 - `node[4:6]` (Docker Swarm Managers)
 - `node[7:9]` (Docker Swarm Workers/Consul Clients)
