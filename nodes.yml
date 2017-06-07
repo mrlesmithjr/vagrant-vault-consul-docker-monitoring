@@ -1,0 +1,121 @@
+---
+- name: 'node0'
+  ansible_groups:
+    - 'consul_all'
+    - 'consul_servers'
+  box: 'mrlesmithjr/xenial64'
+  desktop: false
+  interfaces:
+    - ip: 192.168.250.10
+      auto_config: true
+      method: 'static'
+  mem: 1024
+  provision: true
+  vcpu: 2
+- name: 'node1'
+  ansible_groups:
+    - 'consul_all'
+    - 'consul_servers'
+  box: 'mrlesmithjr/xenial64'
+  desktop: false
+  interfaces:
+    - ip: 192.168.250.11
+      auto_config: true
+      method: 'static'
+  mem: 512
+  provision: true
+  vcpu: 1
+- name: 'node2'
+  ansible_groups:
+    - 'consul_all'
+    - 'consul_servers'
+  box: 'mrlesmithjr/xenial64'
+  desktop: false
+  interfaces:
+    - ip: 192.168.250.12
+      auto_config: true
+      method: 'static'
+  mem: 512
+  provision: true
+  vcpu: 1
+- name: 'node3'
+  ansible_groups:
+    - 'vault_servers'
+  box: 'mrlesmithjr/xenial64'
+  desktop: false
+  interfaces:
+    - ip: 192.168.250.13
+      auto_config: true
+      method: 'static'
+  mem: 512
+  provision: true
+  vcpu: 1
+- name: 'node4'
+  ansible_groups:
+    - 'docker_hosts'
+    - 'docker_swarm_managers'
+  box: 'mrlesmithjr/xenial64'
+  desktop: false
+  interfaces:
+    - ip: 192.168.250.14
+      auto_config: true
+      method: 'static'
+  mem: 1024
+  provision: true
+  vcpu: 1
+- name: 'node5'
+  ansible_groups:
+    - 'docker_hosts'
+    - 'docker_swarm_managers'
+  box: 'mrlesmithjr/xenial64'
+  desktop: false
+  interfaces:
+    - ip: 192.168.250.15
+      auto_config: true
+      method: 'static'
+  mem: 1024
+  provision: true
+  vcpu: 1
+- name: 'node6'
+  ansible_groups:
+    - 'docker_hosts'
+    - 'docker_swarm_managers'
+  box: 'mrlesmithjr/xenial64'
+  desktop: false
+  interfaces:
+    - ip: 192.168.250.16
+      auto_config: true
+      method: 'static'
+  mem: 1024
+  provision: true
+  vcpu: 1
+- name: 'node7'
+  ansible_groups:
+    - 'consul_all'
+    - 'consul_clients'
+    - 'docker_hosts'
+    - 'docker_swarm_workers'
+  box: 'mrlesmithjr/xenial64'
+  desktop: false
+  interfaces:
+    - ip: 192.168.250.17
+      auto_config: true
+      method: 'static'
+  mem: 1024
+  provision: true
+  vcpu: 1
+- name: 'node8'
+  ansible_groups:
+    - 'consul_all'
+    - 'consul_clients'
+    - 'docker_hosts'
+    - 'docker_swarm_workers'
+  box: 'mrlesmithjr/xenial64'
+  desktop: false
+  interfaces:
+    - ip: 192.168.250.18
+      auto_config: true
+      method: 'static'
+  mem: 1024
+  provision: true
+  vcpu: 1

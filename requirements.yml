@@ -1,0 +1,10 @@
+---
+- src: https://github.com/mrlesmithjr/ansible-consul
+- src: https://github.com/mrlesmithjr/ansible-docker
+- src: https://github.com/mrlesmithjr/ansible-docker-swarm
+- src: https://github.com/mrlesmithjr/ansible-es-filebeat
+- src: https://github.com/mrlesmithjr/ansible-grafana
+- src: https://github.com/mrlesmithjr/ansible-hashi-vault
+- src: https://github.com/mrlesmithjr/ansible-netdata
+- src: https://github.com/mrlesmithjr/ansible-prometheus
+- src: https://github.com/mrlesmithjr/ansible-prometheus-node-exporter

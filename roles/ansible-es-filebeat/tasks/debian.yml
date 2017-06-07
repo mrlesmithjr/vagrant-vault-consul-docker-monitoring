@@ -1,0 +1,14 @@
+---
+- name: debian | installing pre-reqs
+  apt:
+    name: "{{ item }}"
+    state: "present"
+  become: true
+  with_items:
+    - 'unzip'
+
+- name: debian | installing filebeat
+  apt:
+    deb: "{{ es_filebeat_dl_url }}/{{ es_filebeat_debian_package }}"
+    state: "present"
+  become: true

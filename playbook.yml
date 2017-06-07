@@ -1,0 +1,149 @@
+---
+- hosts: all
+  vars:
+  roles:
+    - role: ansible-prometheus-node-exporter
+
+- hosts: consul_servers
+  vars:
+    consul_bind_interface: 'enp0s8'
+    consul_services: []
+    consul_ui: false
+    pri_domain_name: 'test.vagrant.local'
+  roles:
+    - role: ansible-consul
+      tags:
+        - consul
+  tasks:
+
+- hosts: consul_clients
+  vars:
+    consul_bind_interface: 'enp0s8'
+    consul_services: []
+    consul_ui: true
+    pri_domain_name: 'test.vagrant.local'
+  roles:
+    - role: ansible-consul
+      tags:
+        - consul
+  tasks:
+
+- hosts: vault_servers
+  vars:
+  roles:
+    - role: ansible-hashi-vault
+      tags:
+        - vault
+  tasks:
+
+- hosts: docker_hosts
+  vars:
+    docker_config_service: true
+    docker_swarm_interface: 'enp0s8'
+    docker_swarm_managers_ansible_group: 'docker_swarm_managers'
+    docker_swarm_workers_ansible_group: 'docker_swarm_workers'
+    pri_domain_name: 'test.vagrant.local'
+  roles:
+    - role: ansible-docker
+    - role: ansible-docker-swarm
+    - role: ansible-es-filebeat
+      tags:
+        - filebeat
+  tasks:
+    - name: Copying Container Provisioning Script
+      copy:
+        src: "scripts/monitoring.sh"
+        dest: "/opt/monitoring.sh"
+        mode: "u=rwx,g=rw,o=r"
+      become: true
+      when: inventory_hostname == docker_swarm_primary_manager
+
+    - name: Provisioning Containers
+      shell: "/opt/monitoring.sh"
+      become: true
+      when: inventory_hostname == docker_swarm_primary_manager
+
+- hosts: node0
+  vars:
+    netdata_registry_enabled: true
+    netdata_registry_to_announce: 'http://192.168.250.10:{{ netdata_default_port }}'
+    prometheus_config:
+      global:
+        scrape_interval: 15s
+        scrape_timeout: 10s 
+        evaluation_interval: 15s
+      rule_files:
+      scrape_configs:
+        - job_name: 'node'
+          static_configs:
+            - targets:
+                - '127.0.0.1:9100'
+            - targets:
+                - '192.168.250.11:9100'
+            - targets:
+                - '192.168.250.12:9100'
+            - targets:
+                - '192.168.250.13:9100'
+            - targets:
+                - '192.168.250.14:9100'
+            - targets:
+                - '192.168.250.15:9100'
+            - targets:
+                - '192.168.250.16:9100'
+            - targets:
+                - '192.168.250.17:9100'
+            - targets:
+                - '192.168.250.18:9100'
+        - job_name: 'cAdvisor'
+          static_configs:
+            - targets:
+                - '192.168.250.14:8080'
+            - targets:
+                - '192.168.250.15:8080'
+            - targets:
+                - '192.168.250.16:8080'
+            - targets:
+                - '192.168.250.17:8080'
+            - targets:
+                - '192.168.250.18:8080'
+        - job_name: 'netdata-scrape'
+          metrics_path: "/api/v1/allmetrics?format=prometheus"
+          static_configs:
+            - targets:
+                - '127.0.0.1:19999'
+            - targets:
+                - '192.168.250.11:19999'
+            - targets:
+                - '192.168.250.12:19999'
+            - targets:
+                - '192.168.250.13:19999'
+            - targets:
+                - '192.168.250.14:19999'
+            - targets:
+                - '192.168.250.15:19999'
+            - targets:
+                - '192.168.250.16:19999'
+            - targets:
+                - '192.168.250.17:19999'
+            - targets:
+                - '192.168.250.18:19999'
+
+  roles:
+    - role: ansible-grafana
+      tags:
+        - monitoring
+    - role: ansible-prometheus
+      tags:
+        - monitoring
+    - role: ansible-netdata
+      tags:
+        - monitoring
+
+- hosts: all:!node0
+  vars:
+    netdata_registry_enabled: false
+    netdata_registry_to_announce: 'http://192.168.250.10:{{ netdata_default_port }}'
+  roles:
+    - role: ansible-netdata
+      tags:
+        - monitoring

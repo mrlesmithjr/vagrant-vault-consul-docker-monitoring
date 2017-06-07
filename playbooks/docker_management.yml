@@ -1,0 +1,36 @@
+- hosts: docker_hosts
+  vars:
+    docker_config_service: true
+    docker_swarm_interface: 'enp0s8'
+    docker_swarm_managers_ansible_group: 'docker_swarm_managers'
+    docker_swarm_workers_ansible_group: 'docker_swarm_workers'
+    pri_domain_name: 'test.vagrant.local'
+  tasks:
+    - name: Setting Cluster Master
+      set_fact:
+        docker_swarm_primary_manager: '{{ groups[docker_swarm_managers_ansible_group][0] }}'
+
+    - name: Installing Packages
+      apt:
+        name: "{{ item }}"
+        state: "present"
+      become: true
+      with_items:
+        - 'redis-tools'
+      tags:
+        - docker
+
+# Errors out but actually creates overlay network
+    # - name: Creating Overlay Networks
+    #   docker_network:
+    #     name: "{{ item['name'] }}"
+    #     driver: "{{ item['driver'] }}"
+    #     state: "{{ item['state'] }}"
+    #   become: true
+    #   with_items:
+    #     - name: 'swarm-net-1'
+    #       driver: 'overlay'
+    #       state: 'present'
+    #   when: inventory_hostname == docker_swarm_primary_manager
+    #   tags:
+    #     - docker_networking

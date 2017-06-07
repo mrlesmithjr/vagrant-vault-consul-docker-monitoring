@@ -1,0 +1,31 @@
+---
+# tasks file for ansible-consul
+- include: set_facts.yml
+  tags:
+    - consul_facts
+
+- include: debian.yml
+  when: ansible_os_family == "Debian"
+
+- include: redhat.yml
+  when: ansible_os_family == "RedHat"
+
+- include: accounts.yml
+
+- include: install.yml
+
+- include: config.yml
+
+- include: services.yml
+
+- include: app_services.yml
+  tags:
+    - consul-app-services
+  when: >
+        consul_services is defined and
+        consul_services
+
+- include: dnsmasq.yml
+  when: >
+        consul_enable_dnsmasq is defined and
+        consul_enable_dnsmasq

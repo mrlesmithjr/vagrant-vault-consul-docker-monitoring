@@ -1,0 +1,20 @@
+- hosts: consul_clients
+  vars:
+  tasks:
+    - name: Installing Pre-Reqs
+      pip:
+        name: "python-consul"
+        state: "present"
+      become: true
+
+    - name: registering services
+      consul:
+        service_name: "redis"
+        service_port: "6379"
+        script: "/usr/bin/redis-cli ping"
+        interval: '15s'
+        tags:
+          - redis
+        state: "present"
+      tags:
+        - consul_services
