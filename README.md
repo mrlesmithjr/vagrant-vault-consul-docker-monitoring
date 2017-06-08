@@ -92,6 +92,25 @@ To validate cluster functionality:
 ```
 curl http://192.168.250.14:9200/_cluster/health\?pretty\=true
 ```
+```
+{
+  "cluster_name" : "elasticsearch",
+  "status" : "green",
+  "timed_out" : false,
+  "number_of_nodes" : 5,
+  "number_of_data_nodes" : 5,
+  "active_primary_shards" : 5,
+  "active_shards" : 10,
+  "relocating_shards" : 0,
+  "initializing_shards" : 0,
+  "unassigned_shards" : 0,
+  "delayed_unassigned_shards" : 0,
+  "number_of_pending_tasks" : 0,
+  "number_of_in_flight_fetch" : 0,
+  "task_max_waiting_in_queue_millis" : 0,
+  "active_shards_percent_as_number" : 100.0
+}
+```
 For the above you may also check against the other Docker Swarm hosts.
 
 [Filebeat]
