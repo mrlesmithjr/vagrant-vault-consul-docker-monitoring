@@ -19,7 +19,18 @@ Environment
   - Prometheus: <http://192.168.250.10:9090>
 - `node3` (Vault)
 - `node[4:6]` (Docker Swarm Managers)
-- `node[7:9]` (Docker Swarm Workers/Consul Clients)
+- `node[7:8]` (Docker Swarm Workers/Consul Clients)
+
+###### IP address assignments
+- node0 (192.168.250.10)
+- node1 (192.168.250.11)
+- node2 (192.168.250.12)
+- node3 (192.168.250.13)
+- node4 (192.168.250.14)
+- node5 (192.168.250.15)
+- node6 (192.168.250.16)
+- node7 (192.168.250.17)
+- node8 (192.168.250.18)
 
 Usage
 -----
@@ -31,25 +42,76 @@ vagrant up
 ```
 
 [cAdvisor]
---------
+----------
 
 [Docker] hosts have exposed metrics for [Prometheus] consumption
 
 [Consul]
 --------
 
-[Elasticsearch]
--------------
+Checking Consul member status:
 
-Running as a [Docker] swarm service for storing [Docker Logs](#Filebeat)
+```
+vagrant ssh node0
+```
+```
+vagrant@node0:~$ sudo consul members list
+Node   Address              Status  Type    Build  Protocol  DC
+node0  192.168.250.10:8301  alive   server  0.8.1  2         dc1
+node1  192.168.250.11:8301  alive   server  0.8.1  2         dc1
+node2  192.168.250.12:8301  alive   server  0.8.1  2         dc1
+node7  192.168.250.17:8301  alive   client  0.8.1  2         dc1
+node8  192.168.250.18:8301  alive   client  0.8.1  2         dc1
+```
+
+[Docker]
+--------
+
+Checking Docker swarm node status:
+
+```
+vagrant ssh node5
+```
+```
+vagrant@node5:~$ sudo docker node ls
+ID                           HOSTNAME  STATUS  AVAILABILITY  MANAGER STATUS
+41oybdyk9njn7trhplpohk4tn *  node5     Ready   Active        Leader
+4zc9ndv7rurfbgrhfzxs68sux    node4     Ready   Active        Reachable
+8c3y3ta5ad56hlhmfzx2wmdgr    node8     Ready   Active
+vmmpixn2i401cyhgd5g4l3cfd    node7     Ready   Active
+x50d9z0zkloixvijxht1l36we    node6     Ready   Active        Reachable
+```
+
+[Elasticsearch]
+---------------
+
+Running as a [Docker] swarm service for storing Docker container logs.
+
+To validate cluster functionality:
+
+```
+curl http://192.168.250.14:9200/_cluster/health\?pretty\=true
+```
+For the above you may also check against the other Docker Swarm hosts.
 
 [Filebeat]
----------
+----------
 
 [Docker] logs for each host sent to [Elasticsearch]
 
 [Grafana]
---------
+---------
+
+Log into the Grafana web UI [here](http://192.168.250.10:3000)
+
+username/password: `admin/admin`
+
+Add the Prometheus data source:
+- click `Add data source`
+- Name: `prometheus`
+- type: `Prometheus`
+- Url: `http://192.168.250.10:9090`
+- click `Add`
 
 [Kibana]
 --------
@@ -63,7 +125,7 @@ Dashboard to view [Docker] logs
 which are also running [Netdata]
 
 [Prometheus]
-----------
+------------
 
 [Vault]
 -------
@@ -80,6 +142,8 @@ up the following:
   - <http://192.168.250.14:5601>
   - <http://192.168.250.15:5601>
   - <http://192.168.250.16:5601>
+
+For the above you may also check against the other Docker Swarm hosts.
 
 ```
 #!/usr/bin/env bash
