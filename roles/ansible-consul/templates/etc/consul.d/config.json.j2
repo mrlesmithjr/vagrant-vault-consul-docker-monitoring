@@ -13,7 +13,7 @@
 {%     set _config = config_json.update({"enable_syslog": true}) %}
 {%     set _config = config_json.update({"encrypt": consul_encryption_key}) %}
 {%     set _config = config_json.update({"log_level": "INFO"}) %}
-{%     set _config = config_json.update({"node_name": ansible_hostname}) %}
+{%     set _config = config_json.update({"node_name": consul_node_name}) %}
 {%     set _config = config_json.update({"ui": consul_ui}) %}
 {%   if inventory_hostname in groups[consul_servers_group] and inventory_hostname in play_hosts %}
 {%     set _config = config_json.update({"bootstrap_expect": (groups[consul_servers_group]|count)|round(0, 'ceil')|int}) %}
@@ -29,5 +29,8 @@
 {%     endif %}
 {%   endfor %}
 {%     set _config = config_json.update({"retry_join": _temp_retry_join}) %}
+{%   if consul_telemetry %}
+{%     set _config = config_json.update({"telemetry": consul_telemetry}) %}
+{%   endif %}
 {{ config_json|to_nice_json }}
 {% endif %}

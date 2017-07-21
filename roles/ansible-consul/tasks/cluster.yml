@@ -1,76 +1,39 @@
 ---
-# We check for an existing encryption key
-# This is not the most secure and probably should be handled differently
-- name: cluster | Checking If Consul Encryption Key Has Already Been Generated
+# Check if a local keyring file is present
+- name: cluster | Check if node has already been bootstrapped
   stat:
-    path: "{{ consul_key_file }}"
-  register: "_consul_key_file"
-  when: inventory_hostname == consul_master
-
-# We generate the encryption key if it does not already exist
-- name: cluster | Generating Consul Encryption Key
-  command: "consul keygen"
-  register: "_consul_encryption_key"
+    path: "{{ consul_data_dir}}/serf/local.keyring"
+  register: keyring_exists
+  ignore_errors: true
   become: true
-  no_log: true
-  when: >
-        inventory_hostname == consul_master and
-        not _consul_key_file['stat']['exists']
 
-# We do this when consul encryption key has already been generated and stored
-- name: cluster | Capturing Existing Consul Encryption Key
-  command: "cat {{ consul_key_file }}"
-  register: "_consul_encryption_key_read"
-  no_log: true
-  changed_when: false
-  become: true
-  when: >
-        inventory_hostname == consul_master and
-        _consul_key_file['stat']['exists']
+- block:
+  # Gather the currently used encryption key of the cluster
+  - name: cluster | Fetch active encryption key
+    slurp:
+      src: "{{ consul_data_dir}}/serf/local.keyring"
+    register: keyring_value
+    become: true
 
-# We do this when we generate a new encryption key
-- name: cluster | Settting consul_encryption_key Fact On Consul Master
-  set_fact:
-    consul_encryption_key: "{{ _consul_encryption_key['stdout'] }}"
-  no_log: true
-  when: >
-        inventory_hostname == consul_master and
-        _consul_encryption_key['changed'] and
-        not ansible_check_mode
+  # Set consul_encryption_key_active to allow comparison in next step
+  - name: cluster | Set fact consul_encryption_key_active
+    set_fact:
+      consul_encryption_key_active: "{{ keyring_value['content'] | b64decode | from_json | first }}"
+    no_log: true
+    become: true
 
-# We do this when consul encryption key has already been generated and stored
-- name: cluster | Settting consul_encryption_key Fact On Consul Master
-  set_fact:
-    consul_encryption_key: "{{ _consul_encryption_key_read['stdout'] }}"
-  no_log: true
-  when: >
-        inventory_hostname == consul_master and
-        _consul_key_file['stat']['exists'] and
-        not ansible_check_mode
+  # Inform the user the the node's key does not match his given key in consul_encryption_key and remove the host from play
+  - name: cluster | Compare active key with consul_encryption_key
+    fail:
+      msg: >
+          "ATTENTION: This node uses another encryption key then defined in consul_encryption_key!
+          The active key can be found locally in {{ consul_data_dir}}/serf/local.keyring"
+          Update the variable consul_encryption_key!
+          Removing node from play.
+    become: true
+    when: consul_encryption_key_active != consul_encryption_key
 
-- name: cluster | Setting consul_encryption_key Fact On Non Consul Master
-  set_fact:
-     consul_encryption_key: "{{ hostvars[consul_master]['consul_encryption_key'] }}"
-  no_log: true
-  when: >
-        inventory_hostname != consul_master and
-        not ansible_check_mode
-
-# We store the encryption key on all of consul servers group in order to
-# preserve the key if for any reason consul_master were to disappear or crash
-# This is not the most secure and probably should be handled differently
-- name: cluster | Storing Consul Encryption Key
-  template:
-    src: "etc/consul.key.j2"
-    dest: "{{ consul_key_file }}"
-    owner: "root"
-    group: "root"
-    mode: "u=rw,g=r,o="
-  no_log: true
-  become: true
-  when: >
-        inventory_hostname in groups[consul_servers_group] and
-        not ansible_check_mode
+  when: keyring_exists.stat.exists
 
 # This is not the most secure and probably should be handled differently
 - name: cluster | Checking For Existing acl_master_token

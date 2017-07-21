@@ -67,6 +67,9 @@ consul_bind_interface: "{{ ansible_default_ipv4['interface'] }}"
 # either set to 0.0.0.0 (default) or consul_bind_address var.
 consul_client_address: '0.0.0.0'
 
+# Defines the name of the node inside the Consul cluster.
+consul_node_name: "{{ ansible_hostname }}"
+
 # Defines if setting up cluster (default)
 # currently does not work as only standalone but adding in ability for testing
 # purposes at a later time
@@ -90,7 +93,9 @@ consul_enable_dnsmasq: true
 
 # Generate using 'consul keygen'
 # make sure to generate a new key and replace this
-# consul_encryption_key: 'qLLp1YCJzp9E/xhg11qkdQ=='
+# also update key if you changed the it in your cluster via 'consul keyring',
+# otherwise the role may deploy an outdated key to additional nodes which then can't join the cluster
+consul_encryption_key: 'qLLp1YCJzp9E/xhg11qkdQ=='
 
 consul_user: 'consul'
 consul_group: 'consul'
@@ -107,6 +112,11 @@ consul_servers_group: 'consul_servers'
 # Define services to register and checks to ensure those services
 # are running on clients. See playbook.yml for examples.
 consul_services: []
+
+# Set telemetry options for Consul. See official documentation for all options possible.
+consul_telemetry: {}
+#   statsd_address: '127.0.0.1:9125'
+#   disable_hostname: true
 
 consul_ui: false
 
