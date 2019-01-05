@@ -1,8 +1,17 @@
-version: '3'  
-services:  
+version: "3"
+services:
   elasticsearch:
-    image: 'elasticsearch:5'
+    image: "elasticsearch:5"
     ports:
-      - '9200:9200'
-      - '9300:9300'
-    command: [ elasticsearch, -E, network.host=0.0.0.0, -E, discovery.zen.ping.unicast.hosts=elasticsearch, -E, discovery.zen.minimum_master_nodes=1 ]
+      - "9200:9200"
+      - "9300:9300"
+    command:
+      [
+        elasticsearch,
+        -E,
+        network.host=0.0.0.0,
+        -E,
+        discovery.zen.ping.unicast.hosts=elasticsearch,
+        -E,
+        discovery.zen.minimum_master_nodes=1,
+      ]

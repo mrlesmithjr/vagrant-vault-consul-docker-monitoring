@@ -1,0 +1,27 @@
+[submodule "roles/ansible-consul"]
+	path = roles/ansible-consul
+	url = https://github.com/mrlesmithjr/ansible-consul
+[submodule "roles/ansible-docker"]
+	path = roles/ansible-docker
+	url = https://github.com/mrlesmithjr/ansible-docker
+[submodule "roles/ansible-docker-swarm"]
+	path = roles/ansible-docker-swarm
+	url = https://github.com/mrlesmithjr/ansible-docker-swarm
+[submodule "roles/ansible-es-filebeat"]
+	path = roles/ansible-es-filebeat
+	url = https://github.com/mrlesmithjr/ansible-es-filebeat
+[submodule "roles/ansible-grafana"]
+	path = roles/ansible-grafana
+	url = https://github.com/mrlesmithjr/ansible-grafana
+[submodule "roles/ansible-hashi-vault"]
+	path = roles/ansible-hashi-vault
+	url = https://github.com/mrlesmithjr/ansible-hashi-vault
+[submodule "roles/ansible-netdata"]
+	path = roles/ansible-netdata
+	url = https://github.com/mrlesmithjr/ansible-netdata
+[submodule "roles/ansible-prometheus"]
+	path = roles/ansible-prometheus
+	url = https://github.com/mrlesmithjr/ansible-prometheus
+[submodule "roles/ansible-prometheus-node-exporter"]
+	path = roles/ansible-prometheus-node-exporter
+	url = https://github.com/mrlesmithjr/ansible-prometheus-node-exporter

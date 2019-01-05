@@ -1,8 +1,0 @@
----
-- name: gem | Installing Ruby Gems
-  gem:
-    name: "{{ item }}"
-    state: "present"
-  become: true
-  with_items:
-    - 'redis'
