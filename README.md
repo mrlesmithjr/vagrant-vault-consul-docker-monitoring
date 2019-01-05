@@ -1,62 +1,71 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
 
 - [Repo Info](#repo-info)
-- [Requirements](#requirements)
-- [Environment](#environment)
-        - [IP address assignments](#ip-address-assignments)
-- [Usage](#usage)
-- [cAdvisor](#cadvisor)
-- [Consul](#consul)
-- [Docker](#docker)
-- [Elasticsearch](#elasticsearch)
-- [Filebeat](#filebeat)
-- [Grafana](#grafana)
-- [Kibana](#kibana)
-- [Netdata](#netdata)
-- [Prometheus](#prometheus)
-- [Vault](#vault)
-- [Monitoring Docker Services](#monitoring-docker-services)
-- [License](#license)
-- [Author Information](#author-information)
+  - [Cloning Repo](#cloning-repo)
+  - [Requirements](#requirements)
+  - [Environment](#environment)
+    - [IP address assignments](#ip-address-assignments)
+  - [Usage](#usage)
+  - [cAdvisor](#cadvisor)
+  - [Consul](#consul)
+  - [Docker](#docker)
+  - [Elasticsearch](#elasticsearch)
+  - [Filebeat](#filebeat)
+  - [Grafana](#grafana)
+  - [Kibana](#kibana)
+  - [Netdata](#netdata)
+  - [Prometheus](#prometheus)
+  - [Vault](#vault)
+  - [Monitoring Docker Services](#monitoring-docker-services)
+  - [License](#license)
+  - [Author Information](#author-information)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Repo Info
+# Repo Info
 
 Spin up a multi-node [Vagrant](https://www.vagrantup.com) environment for
 learning/testing monitoring tools for a micro-services world. All provisioning
 is automated using [Ansible](https://www.ansible.com).
 
+## Cloning Repo
+
+All Ansible roles are added as submodules, therefore in order to properly clone the repo you must do the following:
+
+```bash
+git clone https://github.com/mrlesmithjr/vagrant-vault-consul-docker-monitoring.git --recursive
+```
+
 ## Requirements
 
--   [Ansible](https://www.ansible.com)
--   [VirtualBox](https://www.virtualbox.org)
--   [Vagrant](https://www.vagrantup.com)
+- [Ansible](https://www.ansible.com)
+- [VirtualBox](https://www.virtualbox.org)
+- [Vagrant](https://www.vagrantup.com)
 
 ## Environment
 
--   `node[0:2]` (Consul Servers)
--   `node0`
-    -   Grafana: <http://192.168.250.10:3000>
-    -   Netdata: <http://192.168.250.10:19999>
-    -   Prometheus: <http://192.168.250.10:9090>
--   `node3` (Vault)
--   `node[4:6]` (Docker Swarm Managers)
--   `node[7:8]` (Docker Swarm Workers/Consul Clients)
+- `node[0:2]` (Consul Servers)
+- `node0`
+  - Grafana: <http://192.168.250.10:3000>
+  - Netdata: <http://192.168.250.10:19999>
+  - Prometheus: <http://192.168.250.10:9090>
+- `node3` (Vault)
+- `node[4:6]` (Docker Swarm Managers)
+- `node[7:8]` (Docker Swarm Workers/Consul Clients)
 
-###### IP address assignments
+### IP address assignments
 
--   node0 (192.168.250.10)
--   node1 (192.168.250.11)
--   node2 (192.168.250.12)
--   node3 (192.168.250.13)
--   node4 (192.168.250.14)
--   node5 (192.168.250.15)
--   node6 (192.168.250.16)
--   node7 (192.168.250.17)
--   node8 (192.168.250.18)
+- node0 (192.168.250.10)
+- node1 (192.168.250.11)
+- node2 (192.168.250.12)
+- node3 (192.168.250.13)
+- node4 (192.168.250.14)
+- node5 (192.168.250.15)
+- node6 (192.168.250.16)
+- node7 (192.168.250.17)
+- node8 (192.168.250.18)
 
 ## Usage
 
@@ -145,11 +154,11 @@ username/password: `admin/admin`
 
 Add the Prometheus data source:
 
--   click `Add data source`
--   Name: `prometheus`
--   type: `Prometheus`
--   Url: `http://192.168.250.10:9090`
--   click `Add`
+- click `Add data source`
+- Name: `prometheus`
+- type: `Prometheus`
+- Url: `http://192.168.250.10:9090`
+- click `Add`
 
 ## [Kibana](https://www.elastic.co/products/kibana)
 
@@ -169,14 +178,14 @@ over nodes to announce to which are also running [Netdata](https://my-netdata.io
 As part of the provisioning of this environment we spin
 up the following:
 
--   Elasticsearch cluster:
-    -   <http://192.168.250.14:9200>
-    -   <http://192.168.250.15:9200>
-    -   <http://192.168.250.16:9200>
--   Kibana:
-    -   <http://192.168.250.14:5601>
-    -   <http://192.168.250.15:5601>
-    -   <http://192.168.250.16:5601>
+- Elasticsearch cluster:
+  - <http://192.168.250.14:9200>
+  - <http://192.168.250.15:9200>
+  - <http://192.168.250.16:9200>
+- Kibana:
+  - <http://192.168.250.14:5601>
+  - <http://192.168.250.15:5601>
+  - <http://192.168.250.16:5601>
 
 For the above you may also check against the other Docker Swarm hosts.
 
@@ -275,13 +284,12 @@ fi
 
 ## License
 
-BSD
+MIT
 
 ## Author Information
 
 Larry Smith Jr.
 
--   [@mrlesmithjr](https://www.twitter.com/mrlesmithjr)
--   [EverythingShouldBeVirtual](http://everythingshouldbevirtual.com)
--   [mrlesmithjr.com](http://mrlesmithjr.com)
--   mrlesmithjr [at] gmail.com
+- [@mrlesmithjr](https://www.twitter.com/mrlesmithjr)
+- [EverythingShouldBeVirtual](http://everythingshouldbevirtual.com)
+- [mrlesmithr@gmail.com](mailto:mrlesmithjr@gmail.com)

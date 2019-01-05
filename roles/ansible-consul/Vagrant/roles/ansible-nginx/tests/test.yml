@@ -1,7 +1,0 @@
----
-- hosts: localhost
-  connection: local
-  vars:
-  roles:
-    - role: ansible-nginx
-  tasks:

@@ -1,7 +1,0 @@
----
-- name: debian | Installing Pre-Reqs
-  apt:
-    name: "{{ item }}"
-    state: "present"
-  become: true
-  with_items: '{{ netdata_debian_pre_reqs }}'
